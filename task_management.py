@@ -1,5 +1,5 @@
 
-
+import easygui
 tasks = {
     "T1" : {
         "Title": "Design Homepage",
@@ -56,10 +56,76 @@ team_member = {
         "Task assigned": ["T4"]
     },
 
-    "JLO":{
+    "BDI":{
         "Name": "Bob Dillon",
         "Email": "Bob@techvision.com",
         "Task assigned": ["T5"]
     }
 
 }
+
+
+def menu():
+    options = {
+        "Add a new task": add_task,
+        "Update a task": update_task,
+        "Search for a task": search_task,
+        "Search for a team member": search_team_member,
+        "Generate a progress report": generate_report,
+        "Logout": logout
+    }
+
+    get_input = None
+
+    while get_input != "Logout":
+
+        msg = "Welcome to the progress checker! What woudl you like to do?"
+        title = "Progress Checker Home"
+
+        choices = []
+
+        for action in options:
+            choices.append(action)
+
+        selection = easygui.buttonbox(msg, title, choices)
+
+        if selection is None:
+            selection = "Logout"
+
+        get_input = options[selection]()
+
+
+
+def add_task():
+    pass
+
+def output_task():
+    pass
+
+def update_task():
+    pass
+
+def search():
+    pass
+
+def search_task():
+    pass
+
+def search_team_member():
+    pass
+
+def output_team_member():
+    pass
+
+def generate_report():
+    pass
+
+def logout():
+    choice = easygui.buttonbox("Are you sure you would like to Logout?", "Logout", choices = ["Yes", "No"])
+    if choice == "Yes":
+        exit
+    else:
+        menu()
+    
+
+menu()
