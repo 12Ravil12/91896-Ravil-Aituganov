@@ -42,6 +42,8 @@ tasks = {
     }
 }
 
+
+
 team_member = {
 
     "JSM":{
@@ -92,15 +94,57 @@ def menu():
         if selection is None:
             selection = "Logout"
 
-        get_input = options[selection]()
-
+        get_input = options[selection]
 
 
 def add_task():
+    categories = ["Title", "Description", "Assignee", "Priority,", "Status"]
+    easygui.msgbox("You are adding a task", "Add Movie")
+    new_task = {}
+    for field in categories:
+        if field() in ["Priority"]:
+            value = int_validation(f"Enter the {field} (A number 1-5):", min_val=1, max_val=5)
+        else:
+            value = string_validation(f"Enter the {field}:")
+    
+    task_id = generate_task_id()
+
+    tasks[task_id] = new_task
+
+    easygui.msgbox(f"Task '{new_task['Title']}' added with ID {task_id}.", "Task Added")
+
+    output_task(task_id)
+
     pass
 
-def output_task():
-    pass
+
+
+def generate_task_id():
+
+    task_id = f"T{len(tasks)+1}"
+
+    return task_id
+
+
+
+def output_task(task_id):
+
+    output = [f"--- {tasks[task_id]['Title']} ---"]
+    
+    for key, value in tasks[task_id].items():
+
+        output.append(f"{key} : {value}")
+
+    easygui.msgbox("/n".join(output), title=tasks[task_id]["Title"])
+
+    menu()
+
+
+def output_all_tasks():
+    output = []
+
+    for task_id, task in tasks.items():
+        output.append(f"--- {task['Title']}---")
 
 def update_task():
     pass
@@ -120,12 +164,25 @@ def output_team_member():
 def generate_report():
     pass
 
+def string_val():
+    if type(value) == str:
+        value = str(value)
+        return True
+    else:
+        print("Please enter a string value")
+
+def int_val():
+    if type(value) == int:
+        if int < 1:
+            print("Please enter a value between 1-5")
+        
+        
 def logout():
     choice = easygui.buttonbox("Are you sure you would like to Logout?", "Logout", choices = ["Yes", "No"])
     if choice == "Yes":
-        exit
+        exit()
     else:
         menu()
     
-
 menu()
+
