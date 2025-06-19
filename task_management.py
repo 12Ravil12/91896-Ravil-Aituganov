@@ -74,7 +74,8 @@ def menu():
         "Search for a task": search_task,
         "Search for a team member": search_team_member,
         "Generate a progress report": generate_report,
-        "Logout": logout
+        "Logout": logout,
+        "Find Task": output_task
     }
 
     get_input = None
@@ -94,18 +95,24 @@ def menu():
         if selection is None:
             selection = "Logout"
 
-        get_input = options[selection]
+        get_input = options[selection]()
 
 
-def add_task():
-    categories = ["Title", "Description", "Assignee", "Priority,", "Status"]
-    easygui.msgbox("You are adding a task", "Add Movie")
+categories = ["title", "description", "assignee", "priority,", "status"]
+
+def add_task(categories):
+
     new_task = {}
+
     for field in categories:
-        if field() in ["Priority"]:
-            value = int_validation(f"Enter the {field} (A number 1-5):", min_val=1, max_val=5)
+
+        if field in ["priority"]:
+            priority = easygui.integerbox(f"Enter the {field} (A number 1-5):")
+            value = int_val(priority = priority, min_val=1, max_val=5)
+
         else:
-            value = string_validation(f"Enter the {field}:")
+            str_inp = easygui.integerbox()
+            value = string_val(f"Enter the {field}:")
     
     task_id = generate_task_id()
 
@@ -115,12 +122,29 @@ def add_task():
 
     output_task(task_id)
 
-    pass
+
+
+
+def string_val(value):
+    while True:
+        str_check = easygui.enterbox(value)
+        if str_check is None
+
+def int_val(min_val, max_val, priority):
+    if priority == int:
+        if int < min_val:
+            print("Please enter a value between 1-5")
+        elif int > max_val:
+            print("Please enter a value between 1-5")
+        else:
+            return True
+    else:
+        print("Please enter a numerical value")
+
 
 
 
 def generate_task_id():
-
     task_id = f"T{len(tasks)+1}"
 
     return task_id
@@ -164,17 +188,7 @@ def output_team_member():
 def generate_report():
     pass
 
-def string_val():
-    if type(value) == str:
-        value = str(value)
-        return True
-    else:
-        print("Please enter a string value")
 
-def int_val():
-    if type(value) == int:
-        if int < 1:
-            print("Please enter a value between 1-5")
         
         
 def logout():
