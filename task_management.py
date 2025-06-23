@@ -75,7 +75,8 @@ def menu():
         "Search for a team member": search_team_member,
         "Generate a progress report": generate_report,
         "Logout": logout,
-        "Find Task": output_task
+        "Find Task": output_task,
+        "Output all tasks" : output_all_tasks
     }
 
     get_input = None
@@ -98,27 +99,28 @@ def menu():
         get_input = options[selection]()
 
 
-categories = ["title", "description", "assignee", "priority,", "status"]
 
-def add_task(categories):
+def add_task():
+
+    categories = ["title", "description", "assignee", "priority,", "status"]
 
     new_task = {}
 
     for field in categories:
 
-        if field in ["priority"]:
-            priority = easygui.integerbox(f"Enter the {field} (A number 1-5):")
-            value = int_val(priority = priority, min_val=1, max_val=5)
+        if field.lower() in ["priority"]:
+            value = int_val(f"Enter the {field.lower()}", min_val=1, max_val=5)
 
         else:
-            str_inp = easygui.integerbox()
-            value = string_val(f"Enter the {field}:")
+            value = string_val(f"Enter the {field}")
+
+        new_task[field] = value
     
     task_id = generate_task_id()
 
     tasks[task_id] = new_task
 
-    easygui.msgbox(f"Task '{new_task['Title']}' added with ID {task_id}.", "Task Added")
+    easygui.msgbox(f"Task '{new_task['title']}' added with ID {task_id}.", "Task Added")
 
     output_task(task_id)
 
@@ -128,7 +130,12 @@ def add_task(categories):
 def string_val(value):
     while True:
         str_check = easygui.enterbox(value)
-        if str_check is None
+        if str_check is None:
+            menu()
+        else:
+            return str_check.strip()
+        
+        
 
 def int_val(min_val, max_val, priority):
     if priority == int:
@@ -137,7 +144,7 @@ def int_val(min_val, max_val, priority):
         elif int > max_val:
             print("Please enter a value between 1-5")
         else:
-            return True
+            return 
     else:
         print("Please enter a numerical value")
 
@@ -153,22 +160,27 @@ def generate_task_id():
 
 def output_task(task_id):
 
-    output = [f"--- {tasks[task_id]['Title']} ---"]
+    output = [f"--- {tasks[task_id]['title']} ---"]
     
     for key, value in tasks[task_id].items():
 
         output.append(f"{key} : {value}")
 
-    easygui.msgbox("/n".join(output), title=tasks[task_id]["Title"])
+    easygui.msgbox("\n".join(output), title=tasks[task_id]["title"])
 
     menu()
 
 
 def output_all_tasks():
+
     output = []
 
     for task_id, task in tasks.items():
-        output.append(f"--- {task['Title']}---")
+        output.append(f"--- {task['title']}---")
+        for key, value in tasks.items():
+            if key != "title":
+                output.append(f"{key}: {value}")
+        output.append("")
 
 def update_task():
     pass
