@@ -112,7 +112,10 @@ def add_task():
             value = int_val(f"Enter the {field.lower()}", min_val=1, max_val=5)
 
         else:
-            value = string_val(f"Enter the {field}")
+            if field.lower() in ["assignee"]:
+                value = string_val(f"Assignee (you can choose to leave this blank)")
+            else:
+                value = string_val(f"Enter the {field}")
 
         new_task[field] = value
     
@@ -137,14 +140,15 @@ def string_val(value):
         
         
 
-def int_val(min_val, max_val, priority):
-    if priority == int:
-        if int < min_val:
+def int_val(min_val, max_val, value):
+    int_check = easygui.integerbox(value)
+    
+        if int_check < min_val:
             print("Please enter a value between 1-5")
-        elif int > max_val:
+        elif int_check > max_val:
             print("Please enter a value between 1-5")
         else:
-            return 
+            return int_checl
     else:
         print("Please enter a numerical value")
 
@@ -177,10 +181,11 @@ def output_all_tasks():
 
     for task_id, task in tasks.items():
         output.append(f"--- {task['title']}---")
-        for key, value in tasks.items():
-            if key != "title":
+        for key, value in task.items():
+            if key != "Title":
                 output.append(f"{key}: {value}")
         output.append("")
+    easygui.msgbox("\n".join(output), title = "All Tasks")
 
 def update_task():
     pass
