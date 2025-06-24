@@ -141,16 +141,25 @@ def string_val(value):
         
 
 def int_val(min_val, max_val, value):
+
+
     int_check = easygui.integerbox(value)
     
-        if int_check < min_val:
-            print("Please enter a value between 1-5")
-        elif int_check > max_val:
-            print("Please enter a value between 1-5")
+    checking = True
+    
+    while checking != False:
+        if int_check.isdigit():
+
+            if int_check < min_val:
+                easygui.msgbox("Please enter a value between 1-5")
+                return False
+            elif int_check > max_val:
+                easygui.msgbox("Please enter a value between 1-5")
+                return False
+            else:
+                return int_check
         else:
-            return int_checl
-    else:
-        print("Please enter a numerical value")
+            easygui.msgbox("Please enter a numerical value")
 
 
 
