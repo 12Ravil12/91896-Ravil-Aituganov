@@ -102,7 +102,7 @@ def menu():
 
 def add_task():
 
-    categories = ["title", "description", "assignee", "priority,", "status"]
+    categories = ["title", "description", "assignee", "priority", "status"]
 
     new_task = {}
 
@@ -111,11 +111,10 @@ def add_task():
         if field.lower() in ["priority"]:
             value = int_val(f"Enter the {field.lower()}", min_val=1, max_val=5)
 
-        else:
-            if field.lower() in ["assignee"]:
+        elif field.lower() in ["assignee"]:
                 value = string_val(f"Assignee (you can choose to leave this blank)")
-            else:
-                value = string_val(f"Enter the {field}")
+        else:
+            value = string_val(f"Enter the {field}")
 
         new_task[field] = value
     
@@ -148,18 +147,14 @@ def int_val(min_val, max_val, value):
     checking = True
     
     while checking != False:
-        if int_check.isdigit():
 
-            if int_check < min_val:
-                easygui.msgbox("Please enter a value between 1-5")
-                return False
-            elif int_check > max_val:
-                easygui.msgbox("Please enter a value between 1-5")
-                return False
-            else:
-                return int_check
+        if int_check is None:
+            easygui.msgbox("Please enter a number")
+        elif int_check < min_val or int_check > max_val:
+            easygui.msgbox("Please enter a value between 1-5")
         else:
-            easygui.msgbox("Please enter a numerical value")
+            return int_check
+    
 
 
 
