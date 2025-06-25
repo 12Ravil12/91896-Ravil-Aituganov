@@ -71,8 +71,7 @@ def menu():
     options = {
         "Add a new task": add_task,
         "Update a task": update_task,
-        "Search for a task": search_task,
-        "Search for a team member": search_team_member,
+        "Search": search,
         "Generate a progress report": generate_report,
         "Logout": logout,
         "Find Task": output_task,
@@ -98,7 +97,7 @@ def menu():
 
 def add_task():
 
-    categories = ["title", "description", "assignee", "priority", "status"]
+    categories = ["Title", "description", "assignee", "priority", "status"]
     new_task = {}
 
     for field in categories:
@@ -118,7 +117,7 @@ def add_task():
     
     task_id = generate_task_id()
     tasks[task_id] = new_task
-    easygui.msgbox(f"Task '{new_task['title']}' added with ID {task_id}.", "Task Added")
+    easygui.msgbox(f"Task '{new_task['Title']}' added with ID {task_id}.", "Task Added")
     output_task(task_id)
 
 
@@ -137,7 +136,9 @@ def int_val(min_val, max_val, value):
         int_check = easygui.integerbox(value)
 
         if int_check is None:
-            easygui.msgbox("Please enter a number")
+            menu()
+        elif int_check == "":
+            easygui.msgbox("Please enter a value")
         elif int_check < min_val or int_check > max_val:
             easygui.msgbox("Please enter a value between 1-5")
         else:
@@ -152,13 +153,13 @@ def generate_task_id():
 
 def output_task(task_id):
 
-    output = [f"--- {tasks[task_id]['title']} ---"]
+    output = [f"--- {tasks[task_id]['Title']} ---"]
     
     for key, value in tasks[task_id].items():
 
         output.append(f"{key} : {value}")
 
-    easygui.msgbox("\n".join(output), title=tasks[task_id]["title"])
+    easygui.msgbox("\n".join(output), title=tasks[task_id]["Title"])
 
     menu()
 
@@ -168,9 +169,9 @@ def output_all_tasks():
     output = []
 
     for task_id, task in tasks.items():
-        output.append(f"--- {task['title']}---")
+        output.append(f"--- {task['Title']}---")
         for key, value in task.items():
-            if key != "Title":
+            if key != "title":
                 output.append(f"{key}: {value}")
         output.append("")
     easygui.msgbox("\n".join(output), title = "All Tasks")
@@ -179,10 +180,44 @@ def update_task():
     pass
 
 def search():
-    pass
+    options = {
+        "Search for a Task": search_task,
+        "Search for a team member": search_team_member
+    }
 
-def search_task():
-    pass
+    get_input = None
+
+    while get_input != "exit":
+
+        msg = "What would you like to search for?"
+        title = "Search"
+
+        choices = []
+
+        for action in options:
+            choices.append(action)
+        selection = easygui.buttonbox(msg, title, choices)
+        if selection is None:
+            selection = "exit"
+        get_input = options[selection]()
+
+
+def search_task(): 
+    task_titles = []
+    
+    for task_id, task_data in tasks.items():
+        task_titles.append(task_data["Title"])
+
+
+    selected_title = str(easygui.choicebox("\nPick a task to veiw", "Task search", task_titles))
+
+    if selected_title is None:
+        menu()
+
+    for task_id, task_data in tasks.items():
+        if task_data["Title"] == selected_title:
+            output_task(task_id)
+            return
 
 def search_team_member():
     pass
