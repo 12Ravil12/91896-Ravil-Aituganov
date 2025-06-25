@@ -90,43 +90,36 @@ def menu():
 
         for action in options:
             choices.append(action)
-
         selection = easygui.buttonbox(msg, title, choices)
-
         if selection is None:
             selection = "Logout"
-
         get_input = options[selection]()
-
 
 
 def add_task():
 
     categories = ["title", "description", "assignee", "priority", "status"]
-
     new_task = {}
 
     for field in categories:
-
-        if field.lower() in ["priority"]:
-            value = int_val(f"Enter the {field.lower()}", min_val=1, max_val=5)
-
-        elif field.lower() in ["assignee"]:
-                value = string_val(f"Assignee (you can choose to leave this blank)")
+        if field.lower() == ["priority"]:
+            value = int_val(1, 5, f"Enter the {field.lower()}")
+        elif field.lower() == ["assignee"]:
+                value = easygui.enterbox(f"Assignee (you can choose to leave this blank)")
+                if value is None:
+                    menu()
+                value = value.strip()
+                if value == "":
+                    value = "Not Assigned"
         else:
             value = string_val(f"Enter the {field}")
-
+            new_task[field] = value
         new_task[field] = value
     
     task_id = generate_task_id()
-
     tasks[task_id] = new_task
-
     easygui.msgbox(f"Task '{new_task['title']}' added with ID {task_id}.", "Task Added")
-
     output_task(task_id)
-
-
 
 
 def string_val(value):
@@ -137,16 +130,11 @@ def string_val(value):
         else:
             return str_check.strip()
         
-        
 
 def int_val(min_val, max_val, value):
 
-
-    int_check = easygui.integerbox(value)
-    
-    checking = True
-    
-    while checking != False:
+    while True:
+        int_check = easygui.integerbox(value)
 
         if int_check is None:
             easygui.msgbox("Please enter a number")
@@ -154,16 +142,12 @@ def int_val(min_val, max_val, value):
             easygui.msgbox("Please enter a value between 1-5")
         else:
             return int_check
-    
-
-
 
 
 def generate_task_id():
     task_id = f"T{len(tasks)+1}"
 
     return task_id
-
 
 
 def output_task(task_id):
@@ -209,9 +193,6 @@ def output_team_member():
 def generate_report():
     pass
 
-
-        
-        
 def logout():
     choice = easygui.buttonbox("Are you sure you would like to Logout?", "Logout", choices = ["Yes", "No"])
     if choice == "Yes":
