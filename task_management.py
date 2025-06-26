@@ -74,7 +74,6 @@ def menu():
         "Search": search,
         "Generate a progress report": generate_report,
         "Logout": logout,
-        "Find Task": output_task,
         "Output all tasks" : output_all_tasks
     }
 
@@ -101,9 +100,9 @@ def add_task():
     new_task = {}
 
     for field in categories:
-        if field.lower() == ["priority"]:
+        if field.lower() == "priority":
             value = int_val(1, 5, f"Enter the {field.lower()}")
-        elif field.lower() == ["assignee"]:
+        elif field.lower() == "assignee":
                 value = easygui.enterbox(f"Assignee (you can choose to leave this blank)")
                 if value is None:
                     menu()
@@ -120,6 +119,18 @@ def add_task():
     easygui.msgbox(f"Task '{new_task['Title']}' added with ID {task_id}.", "Task Added")
     output_task(task_id)
 
+def int_val(min_val, max_val, value):
+
+    while True:
+        int_check = easygui.integerbox(value)
+        if int_check is None:
+            menu()
+        elif int_check == "":
+            easygui.msgbox("Please enter a value")
+        elif int_check < min_val or int_check > max_val:
+            easygui.msgbox("Please enter a value between 1-5")
+        else:
+            return int_check
 
 def string_val(value):
     while True:
@@ -130,35 +141,17 @@ def string_val(value):
             return str_check.strip()
         
 
-def int_val(min_val, max_val, value):
-
-    while True:
-        int_check = easygui.integerbox(value)
-
-        if int_check is None:
-            menu()
-        elif int_check == "":
-            easygui.msgbox("Please enter a value")
-        elif int_check < min_val or int_check > max_val:
-            easygui.msgbox("Please enter a value between 1-5")
-        else:
-            return int_check
 
 
 def generate_task_id():
     task_id = f"T{len(tasks)+1}"
-
     return task_id
 
 
 def output_task(task_id):
-
     output = [f"--- {tasks[task_id]['Title']} ---"]
-    
     for key, value in tasks[task_id].items():
-
         output.append(f"{key} : {value}")
-
     easygui.msgbox("\n".join(output), title=tasks[task_id]["Title"])
 
     menu()
@@ -219,11 +212,37 @@ def search_task():
             output_task(task_id)
             return
 
-def search_team_member():
-    pass
 
-def output_team_member():
-    pass
+
+def output_team_member(member_id):
+    output = [f"--- {team_member[member_id]['Name']} ---"]
+    for key, value in team_member[member_id].items():
+        output.append(f"{key} : {value}")
+    easygui.msgbox("\n".join(output), Name=team_member[member_id]["Name"])
+
+    menu()
+
+
+
+
+def search_team_member():
+
+    team_names = []
+    
+    for member_id, member_info in team_member.items():
+        team_names.append(member_info["Name"])
+
+
+    selected_name = str(easygui.choicebox("\nPick a task to veiw", "Task search", team_names))
+
+    if selected_name is None:
+        menu()
+
+    for member_id, member_info in team_member.items():
+        if member_info["Name"] == selected_name:
+            output_team_member(member_id)
+            return
+
 
 def generate_report():
     pass
