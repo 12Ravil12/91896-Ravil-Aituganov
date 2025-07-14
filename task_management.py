@@ -218,7 +218,7 @@ def output_team_member(member_id):
     output = [f"--- {team_member[member_id]['Name']} ---"]
     for key, value in team_member[member_id].items():
         output.append(f"{key} : {value}")
-    easygui.msgbox("\n".join(output), Name=team_member[member_id]["Name"])
+    easygui.msgbox("\n".join(output), title=team_member[member_id]["Name"])
 
     menu()
 
