@@ -101,7 +101,7 @@ def add_task():
 
     for field in categories:
         if field.lower() == "priority":
-            value = int_val(1, 5, f"Enter the {field.lower()}")
+            value = int_val(1, 3, f"Enter the {field.lower()}")
         elif field.lower() == "assignee":
                 value = easygui.enterbox(f"Assignee (you can choose to leave this blank)")
                 if value is None:
@@ -128,7 +128,7 @@ def int_val(min_val, max_val, value):
         elif int_check == "":
             easygui.msgbox("Please enter a value")
         elif int_check < min_val or int_check > max_val:
-            easygui.msgbox("Please enter a value between 1-5")
+            easygui.msgbox("Please enter a value between 1-3")
         else:
             return int_check
 
@@ -169,8 +169,7 @@ def output_all_tasks():
         output.append("")
     easygui.msgbox("\n".join(output), title = "All Tasks")
 
-def update_task():
-    pass
+
 
 def search():
     options = {
@@ -193,6 +192,28 @@ def search():
         if selection is None:
             selection = "exit"
         get_input = options[selection]()
+
+def update_task():
+
+    task_titles = []
+    
+    for task_id, task_data in tasks.items():
+        task_titles.append(task_data["Title"])
+
+
+    selected_title = str(easygui.choicebox("\nPick a task to update", "Task Update", task_titles))
+
+    if selected_title is None:
+        menu()
+
+    for task_id, task_data in tasks.items():
+        if task_data["Title"] == selected_title:
+            output_task(task_id)
+            return
+
+
+
+
 
 
 def search_task(): 
