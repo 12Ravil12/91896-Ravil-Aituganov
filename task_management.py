@@ -93,6 +93,52 @@ def menu():
             selection = "Logout"
         get_input = options[selection]()
 
+def update_task():
+    categories = ["Title", "description", "assignee", "priority", "status"]
+    task_id = search_task()
+    if not task_id:
+        return
+    
+    task = tasks[task_id]
+    updatable_fields = [field for field in categories]
+
+
+    field_to_edit = easygui.buttonbox("Which field do you want to edit?", "Edit Task", updatable_fields)
+
+    if not field_to_edit:
+        easygui.msgbox("No field selected. Edit cancelled.")
+        return
+    
+    if field_to_edit in ["priority"]:
+        new_value = int_val(f"Enter new {field_to_edit.lower()}:")
+    else:
+        new_value = string_val(f"Enter new {field_to_edit.lower()}:")
+
+    task[field_to_edit] = new_value
+    easygui.msgbox(f"{field_to_edit} updates successfully.", "Edit Complete")
+    output_task(task_id)
+    
+
+    """
+    task_titles = []
+
+    categories = ["Title", "description", "assignee", "priority", "status"]
+
+    for task_id, task_data in tasks.items():
+        task_titles.append(task_data["Title"])
+
+
+    selected_title = str(easygui.choicebox("\nPick a task to update", "Task Update", task_titles))
+
+    if selected_title is None:
+        menu()
+
+    task_title = selected_title
+
+    for task_id, task_data in tasks.items():
+        selected_edit = easygui.choicebox(f"\nWhat category do you want to update?, Update{task_title}", categories)
+"""
+       
 
 def add_task():
 
@@ -154,7 +200,6 @@ def output_task(task_id):
         output.append(f"{key} : {value}")
     easygui.msgbox("\n".join(output), title=tasks[task_id]["Title"])
 
-    menu()
 
 
 def output_all_tasks():
@@ -192,24 +237,8 @@ def search():
         if selection is None:
             selection = "exit"
         get_input = options[selection]()
+    return
 
-def update_task():
-
-    task_titles = []
-    
-    for task_id, task_data in tasks.items():
-        task_titles.append(task_data["Title"])
-
-
-    selected_title = str(easygui.choicebox("\nPick a task to update", "Task Update", task_titles))
-
-    if selected_title is None:
-        menu()
-
-    for task_id, task_data in tasks.items():
-        if task_data["Title"] == selected_title:
-            output_task(task_id)
-            return
 
 
 
@@ -231,7 +260,8 @@ def search_task():
     for task_id, task_data in tasks.items():
         if task_data["Title"] == selected_title:
             output_task(task_id)
-            return
+
+    return task_id 
 
 
 
