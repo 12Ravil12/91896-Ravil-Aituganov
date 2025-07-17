@@ -81,7 +81,7 @@ def menu():
 
     while get_input != "Logout":
 
-        msg = "Welcome to the progress checker! What woudl you like to do?"
+        msg = "Welcome to the progress checker! What would you like to do?"
         title = "Progress Checker Home"
 
         choices = []
@@ -96,8 +96,13 @@ def menu():
 def update_task():
     status_options = ["Blocked", "In progress", "not started", "completed"]
     status = [field for field in status_options]
-    categories = ["Title", "description", "assignee", "priority", "status"]
+    categories = ["Title", "Description", "Assignee", "Priority", "Status"]
     task_id = search_task()
+    print(task_id)
+
+
+
+    
     if not task_id:
         return
     
@@ -112,12 +117,11 @@ def update_task():
         return
     
   
-    if field_to_edit in ["priority"]:
+    if field_to_edit in ["Priority"]:
         new_value = int_val(f"Enter new {field_to_edit.lower()}:")
 
     elif field_to_edit.lower() == "assignee":
         member_id = search_team_member()
-        easygui.msgbox(member_id)
         if member_id:
             new_value = member_id
             tasks[task_id]["Assignee"] = new_value
@@ -125,10 +129,11 @@ def update_task():
             
     elif field_to_edit.lower() == "status":
             new_value = easygui.buttonbox("Pick what status you want to assign", "Pick a Status", status)
-            new_value = tasks[task_id]["Assignee"]
+            if new_value == "completed":
+                new_value = tasks[task_id]["Assignee"]
 
     else:
-        new_value = string_val(f"Enter new {field_to_edit.lower()}:")
+        new_value = string_val(field_to_edit)
 
     task[field_to_edit] = new_value
     easygui.msgbox(f"{field_to_edit} updates successfully.", "Edit Complete")
@@ -259,7 +264,7 @@ def search_task():
     for task_id, task_data in tasks.items():
         if task_data["Title"] == selected_title:
             output_task(task_id)
-
+    print(task_id)
     return task_id 
 
 
