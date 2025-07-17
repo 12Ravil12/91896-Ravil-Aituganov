@@ -117,11 +117,16 @@ def update_task():
 
     elif field_to_edit.lower() == "assignee":
         member_id = search_team_member()
+        easygui.msgbox(member_id)
         if member_id:
             new_value = member_id
+            tasks[task_id]["Assignee"] = new_value
+        
             
     elif field_to_edit.lower() == "status":
             new_value = easygui.buttonbox("Pick what status you want to assign", "Pick a Status", status)
+            new_value = tasks[task_id]["Assignee"]
+
     else:
         new_value = string_val(f"Enter new {field_to_edit.lower()}:")
 
@@ -265,7 +270,6 @@ def output_team_member(member_id):
         output.append(f"{key} : {value}")
     easygui.msgbox("\n".join(output), title=team_member[member_id]["Name"])
 
-    menu()
 
 
 
@@ -273,23 +277,23 @@ def output_team_member(member_id):
 def search_team_member():
 
     team_names = []
-    
     for member_id, member_info in team_member.items():
         team_names.append(member_info["Name"])
-
 
     selected_name = str(easygui.choicebox("\nPick a task to veiw", "Task search", team_names))
 
     if selected_name is None:
         menu()
 
-    for member_id, member_info in team_member.items():
-        if member_info["Name"] == selected_name:
-            output_team_member(member_id)
-            return member_id
+    else:
+        for member_id, member_info in team_member.items():
+            if member_info["Name"] == selected_name:
+                output_team_member(member_id)
+                return member_id
 
 
 def generate_report():
+    report = tasks["task_id"]
     pass
 
 def logout():
