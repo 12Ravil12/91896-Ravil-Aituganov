@@ -100,9 +100,6 @@ def update_task():
     task_id = search_task()
     print(task_id)
 
-
-
-
     
     if not task_id:
         return
@@ -125,13 +122,16 @@ def update_task():
         member_id = search_team_member()
         if member_id:
             new_value = member_id
-            tasks[task_id]["Assignee"] = new_value
+            team_member[member_id]["Task assigned"].append(task_id)
+            
+
         
             
     elif field_to_edit.lower() == "status":
             new_value = easygui.buttonbox("Pick what status you want to assign", "Pick a Status", status)
             if new_value == "completed":
-                new_value = tasks[task_id]["Assignee"]
+                selected_member = tasks[task_id]["Assignee"]
+                team_member[selected_member]["Task assigned"].remove(task_id)
 
     else:
         new_value = string_val(field_to_edit)
@@ -146,17 +146,22 @@ def add_task():
     status = [field for field in status_options]
     categories = ["Title", "description", "assignee", "priority", "status"]
     new_task = {}
+    assignees = ["JSM", "JLO", "BDI", "None"]
+
+
 
     for field in categories:
         if field.lower() == "priority":
             value = int_val(1, 3, f"Enter the {field.lower()}")
+
         elif field.lower() == "assignee":
-                value = easygui.enterbox(f"Assignee (you can choose to leave this blank)")
-                if value is None:
-                    menu()
-                value = value.strip()
-                if value == "":
-                    value = "Not Assigned"
+            value = easygui.choicebox("Pick the member you want to assign the task too", "Pick Assignee", assignees)
+            if value != "None":
+                task_id = generate_task_id()
+                team_member[value]["Task assigned"].append(task_id) #Document 21/07 adding the prblem with the task not assigning to the member (update as well)
+
+            
+
                     
         elif field.lower() == "status":
             value = easygui.buttonbox("Pick what status you want to assign", "Pick a Status", status)
@@ -240,7 +245,7 @@ def search():
             choices.append(action)
         selection = easygui.buttonbox(msg, title, choices)
         if selection is None:
-            selection = "exit"
+            menu()
         get_input = options[selection]()
     return
 
@@ -262,11 +267,12 @@ def search_task():
     if selected_title is None:
         menu()
 
+
+
     for task_id, task_data in tasks.items():
         if task_data["Title"] == selected_title:
             output_task(task_id)
-    print(task_id)
-    return task_id 
+            return task_id 
 
 
 
@@ -299,7 +305,8 @@ def search_team_member():
 
 
 def generate_report():
-    report = tasks["task_id"]
+    completed_tasks = ()
+    
     pass
 
 def logout():
