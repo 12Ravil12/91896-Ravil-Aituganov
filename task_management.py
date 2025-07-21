@@ -226,6 +226,7 @@ def output_all_tasks():
 
 
 
+
 def search():
     options = {
         "Search for a Task": search_task,
@@ -305,9 +306,30 @@ def search_team_member():
 
 
 def generate_report():
-    completed_tasks = ()
-    
-    pass
+    not_started_tasks = 0
+    completed_tasks = 0
+    in_progress_tasks = 0
+    blocked_tasks = 0
+    output = []
+
+    for task_id, task in tasks.items():
+        for key, value in task.items():
+            if key == "Status":
+                if value.lower() == "in progress":
+                    in_progress_tasks += 1
+                if value.lower() == "blocked":
+                    blocked_tasks += 1
+                if value.lower() == "completed":
+                    completed_tasks += 1
+                if value.lower() == "not started":
+                    not_started_tasks += 1
+            report = [completed_tasks, blocked_tasks, in_progress_tasks, not_started_tasks]
+    easygui.msgbox(f"There are {completed_tasks} completed tasks", title="Report")
+    easygui.msgbox(f"There are {in_progress_tasks} in progress tasks", title="Report")
+    easygui.msgbox(f"There are {not_started_tasks} not started tasks", title="Report")
+    easygui.msgbox(f"There are {blocked_tasks} blocked tasks", title="Report")
+
+   
 
 def logout():
     choice = easygui.buttonbox("Are you sure you would like to Logout?", "Logout", choices = ["Yes", "No"])
