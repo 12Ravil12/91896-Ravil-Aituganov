@@ -98,7 +98,6 @@ def update_task():
     status = [field for field in status_options]
     categories = ["Title", "Description", "Assignee", "Priority", "Status"]
     task_id = search_task()
-    print(task_id)
 
     
     if not task_id:
@@ -141,8 +140,8 @@ def update_task():
     output_task(task_id)
     
 
-def add_task():
-    status_options = ["Blocked", "In progress", "not started", "completed"]
+def add_task():#Problem where user can add a task without a name of other variables
+    status_options = ["blocked", "In progress", "not started", "completed"]#I removed the capital blockec 22/07
     status = [field for field in status_options]
     categories = ["Title", "description", "assignee", "priority", "status"]
     new_task = {}
@@ -151,15 +150,20 @@ def add_task():
 
 
     for field in categories:
+        if field == "":
+            easygui.msgbox("Please enter a value")
+            
         if field.lower() == "priority":
             value = int_val(1, 3, f"Enter the {field.lower()}")
 
         elif field.lower() == "assignee":
             value = easygui.choicebox("Pick the member you want to assign the task too", "Pick Assignee", assignees)
-            if value != "None":
+            if value is None:#I added none to ecit
+                menu()
+            if value != "None": #I had to add back the 'non' 22/07/2025
                 task_id = generate_task_id()
                 team_member[value]["Task assigned"].append(task_id) #Document 21/07 adding the prblem with the task not assigning to the member (update as well)
-
+            
             
 
                     
@@ -188,10 +192,12 @@ def int_val(min_val, max_val, value):
         else:
             return int_check
 
-def string_val(value):
+def string_val(value):# I added the stry checking of if the input is empty
     while True:
         str_check = easygui.enterbox(value)
-        if str_check is None:
+        if str_check == "":
+            easygui.msgbox("Please enter a value")
+        elif str_check is None:
             menu()
         else:
             return str_check.strip()
@@ -227,13 +233,14 @@ def output_all_tasks():
 
 
 
-def search():
+def search(): #Adding exits to all the function 22/07
     options = {
         "Search for a Task": search_task,
-        "Search for a team member": search_team_member
+        "Search for a team member": search_team_member,
+        "Exit": exit_search
     }
 
-    get_input = None
+    get_input = False
 
     while get_input != "exit":
 
@@ -250,7 +257,8 @@ def search():
         get_input = options[selection]()
     return
 
-
+def exit_search():
+    menu()
 
 
 
@@ -323,7 +331,7 @@ def generate_report():
                     completed_tasks += 1
                 if value.lower() == "not started":
                     not_started_tasks += 1
-            report = [completed_tasks, blocked_tasks, in_progress_tasks, not_started_tasks]
+        
     easygui.msgbox(f"There are {completed_tasks} completed tasks", title="Report")
     easygui.msgbox(f"There are {in_progress_tasks} in progress tasks", title="Report")
     easygui.msgbox(f"There are {not_started_tasks} not started tasks", title="Report")
