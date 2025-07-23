@@ -1,5 +1,10 @@
 
 import easygui
+
+"""
+This nested dictionary holds the tasks, and their key information
+"""
+
 tasks = {
     "T1" : {
         "Title": "Design Homepage",
@@ -42,7 +47,10 @@ tasks = {
     }
 }
 
-
+"""
+This nested dictionary holds all the team members, and their key information
+and also their tasks assigned in a list
+"""
 
 team_member = {
 
@@ -66,6 +74,11 @@ team_member = {
 
 }
 
+"""
+The menu function, allows the users to pick what they would like to do
+and when the user presses a button the menu calls that specific fucntion
+to perform what the user wants to do.
+"""
 
 def menu():
     options = {
@@ -93,6 +106,11 @@ def menu():
             selection = "Logout"
         get_input = options[selection]()
 
+"""
+This update function allows the user to edit the existing 
+tasks and their assignees, or values
+"""
+
 def update_task():
     status_options = ["Blocked", "In progress", "Not started", "Completed"]
     status = [field for field in status_options]
@@ -115,7 +133,7 @@ def update_task():
     
   
     if field_to_edit in ["Priority"]:
-        new_value = int_val(f"Enter new {field_to_edit.lower()}:")
+        new_value = int_val(1, 3, f"Enter new {field_to_edit.lower()}:")#Had to add this (1-3) 23/07
 
     elif field_to_edit.lower() == "assignee":
         member_id = search_team_member()
@@ -139,6 +157,11 @@ def update_task():
     easygui.msgbox(f"{field_to_edit} updates successfully.", "Edit Complete")
     output_task(task_id)
     
+"""
+This function allows the user to add a task and customise its properties
+to suit the users needs. It also allows the user to assign the task to a
+team member
+"""
 
 def add_task():#Problem where user can add a task without a name of other variables
     status_options = ["Blocked", "In progress", "Not started", "Completed"]#I removed the capital blockec 22/07
@@ -179,6 +202,12 @@ def add_task():#Problem where user can add a task without a name of other variab
     easygui.msgbox(f"Task '{new_task['Title']}' added with ID {task_id}.", "Task Added")
     output_task(task_id)
 
+"""
+This function validates the users input to ensure it is an integer, and is 
+within the set boundaries required (1-3), and ensure sthe user inputs a
+value
+"""
+
 def int_val(min_val, max_val, value):
 
     while True:
@@ -192,6 +221,11 @@ def int_val(min_val, max_val, value):
         else:
             return int_check
 
+"""
+This function validates the users string inputs to ensure they are valid
+and that they put in a value
+"""
+
 def string_val(value):# I added the stry checking of if the input is empty
     while True:
         str_check = easygui.enterbox(value)
@@ -202,14 +236,17 @@ def string_val(value):# I added the stry checking of if the input is empty
         else:
             return str_check.strip()
         
-
-
-
+"""
+This function generates an ID for a new task
+"""
 def generate_task_id():
     task_id = f"T{len(tasks)+1}"
     return task_id
 
-
+"""
+This function outputs the task, and its key information by accesing the
+information in the nested dictionary
+"""
 def output_task(task_id):
     output = [f"--- {tasks[task_id]['Title']} ---"]
     for key, value in tasks[task_id].items():
@@ -217,7 +254,10 @@ def output_task(task_id):
     easygui.msgbox("\n".join(output), title=tasks[task_id]["Title"])
 
 
-
+"""
+This function outputs all the tasks and their key information by also
+accesing the information in the nested dictionary
+"""
 def output_all_tasks():
 
     output = []
@@ -232,7 +272,10 @@ def output_all_tasks():
 
 
 
-
+"""
+This function allows the user to select what search fucntion they would like
+to use, and then calls the selected search function
+"""
 def search(): #Adding exits to all the function 22/07
     options = {
         "Search for a Task": search_task,
@@ -257,13 +300,19 @@ def search(): #Adding exits to all the function 22/07
         get_input = options[selection]()
     return
 
+
+"""
+This allows the user to exit the search function
+"""
 def exit_search():
     menu()
 
 
 
 
-
+"""
+This function allows the user to search for a task by accesing the information in the nested dictionary
+"""
 def search_task(): 
     task_titles = []
     
@@ -284,7 +333,10 @@ def search_task():
             return task_id 
 
 
-
+"""
+This function outputs the team members name and information by accesing the 
+information in the nested dictionary
+"""
 def output_team_member(member_id):
     output = [f"--- {team_member[member_id]['Name']} ---"]
     for key, value in team_member[member_id].items():
@@ -294,7 +346,8 @@ def output_team_member(member_id):
 
 
 
-
+"""
+This function allows the """
 def search_team_member():
 
     team_names = []
@@ -314,7 +367,6 @@ def search_team_member():
 
 
 def generate_report():
-    print(tasks)
     not_started_tasks = 0
     completed_tasks = 0
     in_progress_tasks = 0
