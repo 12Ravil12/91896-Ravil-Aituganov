@@ -6,7 +6,7 @@ tasks = {
         "Description" : "Create the Login page for the website",
         "Assignee": "JSM",
         "Priority": 3,
-        "Status" : "In Progress"
+        "Status" : "In progress"
     },
     
     "T2" : {
@@ -94,7 +94,7 @@ def menu():
         get_input = options[selection]()
 
 def update_task():
-    status_options = ["Blocked", "In progress", "not started", "completed"]
+    status_options = ["Blocked", "In progress", "Not started", "Completed"]
     status = [field for field in status_options]
     categories = ["Title", "Description", "Assignee", "Priority", "Status"]
     task_id = search_task()
@@ -141,9 +141,9 @@ def update_task():
     
 
 def add_task():#Problem where user can add a task without a name of other variables
-    status_options = ["blocked", "In progress", "not started", "completed"]#I removed the capital blockec 22/07
+    status_options = ["Blocked", "In progress", "Not started", "Completed"]#I removed the capital blockec 22/07
     status = [field for field in status_options]
-    categories = ["Title", "description", "assignee", "priority", "status"]
+    categories = ["Title", "description", "assignee", "priority", "Status"]
     new_task = {}
     assignees = ["JSM", "JLO", "BDI", "None"]
 
@@ -314,23 +314,23 @@ def search_team_member():
 
 
 def generate_report():
+    print(tasks)
     not_started_tasks = 0
     completed_tasks = 0
     in_progress_tasks = 0
     blocked_tasks = 0
-    output = []
 
     for task_id, task in tasks.items():
         for key, value in task.items():
             if key == "Status":
-                if value.lower() == "in progress":
+                if value == "In progress":
                     in_progress_tasks += 1
-                if value.lower() == "blocked":
+                if value == "Blocked":
                     blocked_tasks += 1
-                if value.lower() == "completed":
+                if value == "Completed":
                     completed_tasks += 1
-                if value.lower() == "not started":
-                    not_started_tasks += 1
+                if value == "Not started":
+                    not_started_tasks += 1#Had to make some values capital for consistency
         
     easygui.msgbox(f"There are {completed_tasks} completed tasks", title="Report")
     easygui.msgbox(f"There are {in_progress_tasks} in progress tasks", title="Report")
