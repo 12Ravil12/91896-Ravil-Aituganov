@@ -2,7 +2,8 @@
 import easygui
 
 """
-This nested dictionary holds the tasks, and their key information
+This nested dictionary holds all the tasks, and their key information
+and also their assignees, priority and status.
 """
 
 tasks = {
@@ -178,13 +179,13 @@ def add_task():#Problem where user can add a task without a name of other variab
 
 
     for field in categories:
-        if field == "":
+        if field == "": #This is to ensure that the user inputs a value by having the "" which is an empty string.
             easygui.msgbox("Please enter a value")
             
-        if field.lower() == "priority":
+        if field.lower() == "priority":# This is to ensure that the user inputs a value between 1-3 and that it is an integer through the int_val function
             value = int_val(1, 3, f"Enter the {field.lower()}")
 
-        elif field.lower() == "assignee":
+        elif field.lower() == "assignee":#This is to ensure that the user inputs a value from the list of assignees.
             value = easygui.choicebox("Pick the member you want to assign the task too", "Pick Assignee", assignees)
             if value is None:#I added none to ecit
                 menu()
@@ -194,17 +195,16 @@ def add_task():#Problem where user can add a task without a name of other variab
             
             
 
-                    
-        elif field.lower() == "status":
+        elif field.lower() == "status":#This allows the user to choose what exact status then want to pick using the easygui.buttonbox
             value = easygui.buttonbox("Pick what status you want to assign", "Pick a Status", status)
-        else:
+        else:#Otherwise the user can input any string value they want, and it will be added to the new_task dictionary
             value = string_val(f"Enter the {field}")
             new_task[field] = value
         new_task[field] = value
     
-    task_id = generate_task_id()
+    task_id = generate_task_id()#This generates a new task ID for the new task
     tasks[task_id] = new_task
-    easygui.msgbox(f"Task '{new_task['Title']}' added with ID {task_id}.", "Task Added")
+    easygui.msgbox(f"Task '{new_task['Title']}' added with ID {task_id}.", "Task Added")#This easygui.msgbox outputs the task that was added and its ID
     output_task(task_id)
 
 """
@@ -352,7 +352,8 @@ def output_team_member(member_id):
 
 
 """
-This function allows the """
+This function allows the user to search for a team member by their name
+and outputs their information by accesing the information in the nested dictionary"""
 def search_team_member():
 
     team_names = []
@@ -371,7 +372,10 @@ def search_team_member():
                 output_team_member(member_id)
                 return member_id
 
-
+"""
+This function generates a report of the tasks and their statuses
+and outputs the report in a message box
+"""
 def generate_report():
     not_started_tasks = 0
     completed_tasks = 0
@@ -397,7 +401,11 @@ def generate_report():
     
 
    
-
+"""
+This function allows the user to logout of the application
+and asks the user if they are sure they want to logout
+and if they are sure it exits the application
+"""
 def logout():
     choice = easygui.buttonbox("Are you sure you would like to Logout?",\
         "Logout", choices = ["Yes", "No"])
