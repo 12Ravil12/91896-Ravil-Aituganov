@@ -138,8 +138,10 @@ def update_task():
 
     elif field_to_edit.lower() == "assignee":
         member_id = search_team_member()
-        if member_id:
-            new_value = member_id
+        if member_id is None:
+            easygui.msgbox("Edit has been cancelled,")
+            return
+        new_value = member_id
 
         if tasks[task_id]["Assignee"] == "None":
             team_member[member_id]["Task assigned"].append(task_id)
