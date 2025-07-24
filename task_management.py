@@ -136,15 +136,18 @@ def update_task():
 
     elif field_to_edit.lower() == "assignee":
         member_id = search_team_member()
-        if member_id:
-            new_value = member_id
+        if member_id is None:
+            easygui.msgbox("No member selected. Edit cancelled")
+            return
 
-            if tasks[task_id]["Assignee"] == "None":
-                team_member[member_id]["Task assigned"].append(task_id)
-            else:
-                assignee = tasks[task_id]["Assignee"]
-                team_member[assignee]["Task assigned"].remove(task_id)#had to add this to make sure that that there are no double ups 24/07
-                team_member[member_id]["Task assigned"].append(task_id)
+        new_value = member_id
+
+        if tasks[task_id]["Assignee"] == "None":
+            team_member[member_id]["Task assigned"].append(task_id)
+        else:
+            assignee = tasks[task_id]["Assignee"]
+            team_member[assignee]["Task assigned"].remove(task_id)#had to add this to make sure that that there are no double ups 24/07
+            team_member[member_id]["Task assigned"].append(task_id)
 
 
         
