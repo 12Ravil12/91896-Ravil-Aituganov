@@ -87,7 +87,7 @@ def menu():
         "Update a task": update_task,
         "Search": search,
         "Generate a progress report": generate_report,
-        "Logout": logout,
+        "Exit": exit_program,
         "Output all tasks" : output_all_tasks
     }
 
@@ -138,8 +138,11 @@ def update_task():
 
     elif field_to_edit.lower() == "assignee":
         member_id = search_team_member()
+        
         if member_id:
             new_value = member_id
+            # member_id = new_value
+        
 
             if tasks[task_id]["Assignee"] == "None":
                 team_member[member_id]["Task assigned"].append(task_id)
@@ -156,10 +159,12 @@ def update_task():
             if new_value == "completed":
                 selected_member = tasks[task_id]["Assignee"]
                 team_member[selected_member]["Task assigned"].remove(task_id)
-
+    elif member_id == None:
+        return
     else:
         new_value = string_val(field_to_edit)
 
+    
     task[field_to_edit] = new_value
     easygui.msgbox(f"{field_to_edit} updates successfully.", "Edit Complete")
     output_task(task_id)
@@ -198,6 +203,8 @@ def add_task():
         #This allows the user to choose what exact status then want to pick using the easygui.buttonbox
         elif field.lower() == "status":
             value = easygui.buttonbox("Pick what status you want to assign", "Pick a Status", status)
+            if value is None:
+                menu()
         #Otherwise the user can input any string value they want, and it will be added to the new_task dictionary
         else:
             value = string_val(f"Enter the {field}")
@@ -368,15 +375,20 @@ def search_team_member():
     This function allows the user to search for a team member by their name
     and outputs their information by accesing the information in the nested dictionary
     """
+
+    print("In search")
     team_names = []
     for member_id, member_info in team_member.items():
         team_names.append(member_info["Name"])
 
     selected_name = str(easygui.choicebox("\nPick a task to veiw",\
         "Task search", team_names))
-
-    if selected_name is None:
-        menu()
+    print(selected_name)
+    if selected_name == "None":
+        print("Exited")
+        # return ("Bob")
+        return
+        
 
     else:
         for member_id, member_info in team_member.items():
@@ -415,13 +427,13 @@ def generate_report():
 
    
 
-def logout():
+def exit_program():
     """
     This function allows the user to logout of the application
     and asks the user if they are sure they want to logout
     and if they are sure it exits the application
     """
-    choice = easygui.buttonbox("Are you sure you would like to Logout?",\
+    choice = easygui.buttonbox("Are you sure you would like to Exit",\
         "Logout", choices = ["Yes", "No"])
     if choice == "Yes":
         exit()
