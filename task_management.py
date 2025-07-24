@@ -130,8 +130,7 @@ def update_task():
     if not field_to_edit:
         easygui.msgbox("No field selected. Edit cancelled.")
         return
-    
-  
+
     if field_to_edit in ["Priority"]:
         new_value = int_val(1, 3, f"Enter new {field_to_edit.lower()}:")#Had to add this (1-3) 23/07
 
@@ -139,8 +138,14 @@ def update_task():
         member_id = search_team_member()
         if member_id:
             new_value = member_id
-            team_member[member_id]["Task assigned"].append(task_id)
-            
+
+            if tasks[task_id]["Assignee"] == "None":
+                team_member[member_id]["Task assigned"].append(task_id)
+            else:
+                assignee = tasks[task_id]["Assignee"]
+                team_member[assignee]["Task assigned"].remove(task_id)#had to add this to make sure that that there are no double ups 24/07
+                team_member[member_id]["Task assigned"].append(task_id)
+
 
         
             
@@ -354,7 +359,8 @@ def search_team_member():
     for member_id, member_info in team_member.items():
         team_names.append(member_info["Name"])
 
-    selected_name = str(easygui.choicebox("\nPick a task to veiw", "Task search", team_names))
+    selected_name = str(easygui.choicebox("\nPick a task to veiw",\
+        "Task search", team_names))
 
     if selected_name is None:
         menu()
@@ -384,15 +390,17 @@ def generate_report():
                 if value == "Not started":
                     not_started_tasks += 1#Had to make some values capital for consistency
         
-    easygui.msgbox(f"There are {completed_tasks} completed tasks", title="Report")
-    easygui.msgbox(f"There are {in_progress_tasks} in progress tasks", title="Report")
-    easygui.msgbox(f"There are {not_started_tasks} not started tasks", title="Report")
-    easygui.msgbox(f"There are {blocked_tasks} blocked tasks", title="Report")
+    easygui.msgbox(f"There are {completed_tasks} completed tasks\n\
+                    There are {in_progress_tasks} in progress tasks\n\
+                    There are {not_started_tasks} not started tasks\n\
+                    There are {blocked_tasks} blocked tasks", title="Report")#added all of the taks to generate in the same box 24/07
+    
 
    
 
 def logout():
-    choice = easygui.buttonbox("Are you sure you would like to Logout?", "Logout", choices = ["Yes", "No"])
+    choice = easygui.buttonbox("Are you sure you would like to Logout?",\
+        "Logout", choices = ["Yes", "No"])
     if choice == "Yes":
         exit()
     else:
