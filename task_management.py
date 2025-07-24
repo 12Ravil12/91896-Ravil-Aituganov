@@ -296,6 +296,7 @@ def search(): #Adding exits to all the function 22/07
     This function allows the user to select what search fucntion they would like
     to use, and then calls the selected search function
     """
+    #This is the options for the search function, and the functions that are called when the user selects an option
     options = {
         "Search for a Task": search_task,
         "Search for a team member": search_team_member,
@@ -335,8 +336,10 @@ def search_task():
     """
     This function allows the user to search for a task by accesing the information in the nested dictionary
     """
-    task_titles = []
     
+    task_titles = []
+    #This loops through the tasks and appends the titles to the task_titles list
+    #This is so that the user can select a task by its title
     for task_id, task_data in tasks.items():
         task_titles.append(task_data["Title"])
 
@@ -345,9 +348,8 @@ def search_task():
 
     if selected_title is None:
         menu()
-
-
-
+        #This loops through the tasks and checks if the title matches the selected title
+    #If it does it outputs the task information
     for task_id, task_data in tasks.items():
         if task_data["Title"] == selected_title:
             output_task(task_id)
@@ -360,6 +362,8 @@ def output_team_member(member_id):
     This function outputs the team members name and information by accesing the 
     information in the nested dictionary
     """
+    #This function outputs the team member, and their key information by accesing the
+    #information in the nested dictionary
     output = [f"--- {team_member[member_id]['Name']} ---"]
     for key, value in team_member[member_id].items():
         output.append(f"{key} : {value}")
@@ -390,6 +394,8 @@ def search_team_member():
         
 
     else:
+        #This loops through the team members and checks if the name matches the selected name
+        #If it does it outputs the team member information
         for member_id, member_info in team_member.items():
             if member_info["Name"] == selected_name:
                 output_team_member(member_id)
@@ -405,7 +411,8 @@ def generate_report():
     completed_tasks = 0
     in_progress_tasks = 0
     blocked_tasks = 0
-
+    #This loops through the tasks and counts the number of tasks in each status
+    #and increments the counters for each status
     for task_id, task in tasks.items():
         for key, value in task.items():
             if key == "Status":
@@ -416,8 +423,11 @@ def generate_report():
                 if value == "Completed":
                     completed_tasks += 1
                 if value == "Not started":
-                    not_started_tasks += 1#Had to make some values capital for consistency
-        
+                    not_started_tasks += 1
+                    #Had to make some values capital for consistency
+    #This easygui.msgbox outputs the report of the tasks and their statuses
+    #and the number of tasks in each status
+
     easygui.msgbox(f"There are {completed_tasks} completed tasks\n\
                     There are {in_progress_tasks} in progress tasks\n\
                     There are {not_started_tasks} not started tasks\n\
@@ -432,6 +442,8 @@ def exit_program():
     and asks the user if they are sure they want to logout
     and if they are sure it exits the application
     """
+     #This easygui.buttonbox asks the user if they are sure they want to logout
+    #If they are sure it exits the application, otherwise it returns to the menu
     choice = easygui.buttonbox("Are you sure you would like to Exit",\
         "Logout", choices = ["Yes", "No"])
     if choice == "Yes":
