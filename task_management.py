@@ -177,7 +177,7 @@ def add_task():
     to suit the users needs. It also allows the user to assign the task to a
     team member
     """
-    status_options = ["Blocked", "In progress", "Not started", "Completed"]#I removed the capital blockec 22/07
+    status_options = ["Blocked", "In progress", "Not started", "Completed"]
     status = [field for field in status_options]
     categories = ["Title", "description", "assignee", "priority", "Status"]
     new_task = {}
@@ -193,11 +193,11 @@ def add_task():
         #This is to ensure that the user inputs a value from the list of assignees.
         elif field.lower() == "assignee":
             value = easygui.choicebox("Pick the member you want to assign the task too", "Pick Assignee", assignees)
-            if value is None:#I added none to ecit
+            if value is None:
                 menu()
-            if value != "None": #I had to add back the 'non' 22/07/2025
+            if value != "None": 
                 task_id = generate_task_id()
-                team_member[value]["Task assigned"].append(task_id) #Document 21/07 adding the prblem with the task not assigning to the member (update as well)
+                team_member[value]["Task assigned"].append(task_id)
             
             
         #This allows the user to choose what exact status then want to pick using the easygui.buttonbox
@@ -349,6 +349,7 @@ def search_task():
 
     if selected_title is None:
         menu()
+
         #This loops through the tasks and checks if the title matches the selected title
     #If it does it outputs the task information
     for task_id, task_data in tasks.items():
