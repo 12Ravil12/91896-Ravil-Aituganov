@@ -135,7 +135,7 @@ def update_task():
         return
 
     if field_to_edit in ["Priority"]:
-        new_value = int_val(1, 3, f"Enter new {field_to_edit.lower()}:")#Had to add this (1-3) 23/07
+        new_value = int_val(1, 3, f"Enter new {field_to_edit.lower()}:")
 
     elif field_to_edit.lower() == "assignee":
         member_id = search_team_member()
