@@ -111,7 +111,6 @@ def menu():
         get_input = options[selection]()
 
 
-
 def update_task():
     """
     This update function allows the user to edit the existing 
@@ -152,7 +151,9 @@ def update_task():
             assignee = tasks[task_id]["Assignee"]
             team_member[assignee]["Task assigned"].remove(task_id)
             team_member[member_id]["Task assigned"].append(task_id)
-  
+#This statement checks if the user has selected a status, and then updates the 
+#status of the task, and also removes the task from the previous assignee
+#only if the status is completed.
     elif field_to_edit.lower() == "status":
             new_value = easygui.buttonbox("Pick what status you want to\
 assign", "Pick a Status", status)
@@ -163,7 +164,7 @@ assign", "Pick a Status", status)
         return
     else:
         new_value = string_val(field_to_edit)
-
+    #This updates the task with the new value for the field that was edited
     task[field_to_edit] = new_value
     easygui.msgbox(f"{field_to_edit} updates successfully.", "Edit Complete")
     output_task(task_id)
@@ -248,7 +249,6 @@ def int_val(min_val, max_val, value):
             return int_check
 
 
-
 def string_val(value):# I added the stry checking of if the input is
     #empty
     """
@@ -288,7 +288,6 @@ def output_task(task_id):
     easygui.msgbox("\n".join(output), title=tasks[task_id]["Title"])
 
 
-
 def output_all_tasks():
     """
     This function outputs all the tasks and their key information by also
@@ -303,8 +302,6 @@ def output_all_tasks():
                 output.append(f"{key}: {value}")
         output.append("")
     easygui.msgbox("\n".join(output), title = "All Tasks")
-
-
 
 
 def search(): #Adding exits to all the function 22/07
@@ -324,12 +321,9 @@ def search(): #Adding exits to all the function 22/07
     #This loop allows the user to select what search function they
     #would like to use, and then calls the selected search function
     while get_input != "exit":
-
         msg = "What would you like to search for?"
         title = "Search"
-
         choices = []
-
         for action in options:
             choices.append(action)
         selection = easygui.buttonbox(msg, title, choices)
@@ -339,15 +333,11 @@ def search(): #Adding exits to all the function 22/07
     return
 
 
-
 def exit_search():
     """
     This allows the user to exit the search function
     """
     menu()
-
-
-
 
 
 def search_task(): 
@@ -393,9 +383,6 @@ def output_team_member(member_id):
     easygui.msgbox("\n".join(output), title=team_member[member_id]["Name"])
 
 
-
-
-
 def search_team_member():
     """
     This function allows the user to search for a team member by their name
@@ -412,8 +399,6 @@ def search_team_member():
 "Task search", team_names))
     if selected_name == "None":
         return
-        
-
     else:
         #This loops through the team members and checks if the name 
         #matches the selected name If it does it outputs 
@@ -455,9 +440,6 @@ def generate_report():
 There are {in_progress_tasks} in progress tasks\n\
 There are {not_started_tasks} not started tasks\n\
 There are {blocked_tasks} blocked tasks", title="Report")#added all of the taks to generate in the same box 24/07
-    
-
-   
 
 def exit_program():
     """
