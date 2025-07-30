@@ -105,7 +105,7 @@ def menu():
             choices.append(action)
         selection = easygui.buttonbox(msg, title, choices)
         if selection is None:
-            selection = "Logout"
+            exit_program()
         get_input = options[selection]()
 
 
@@ -128,7 +128,8 @@ def update_task():
     updatable_fields = [field for field in categories]
 
 
-    field_to_edit = easygui.buttonbox("Which field do you want to edit?", "Edit Task", updatable_fields)
+    field_to_edit = easygui.buttonbox("Which field do you want to edit?",\
+"Edit Task", updatable_fields)
 
     if not field_to_edit:
         easygui.msgbox("No field selected. Edit cancelled.")
@@ -148,18 +149,19 @@ def update_task():
             team_member[member_id]["Task assigned"].append(task_id)
         else:
             assignee = tasks[task_id]["Assignee"]
-            team_member[assignee]["Task assigned"].remove(task_id)#had to add this to make sure that that there are no double ups 24/07
+            team_member[assignee]["Task assigned"].remove(task_id)
             team_member[member_id]["Task assigned"].append(task_id)
 
 
         
             
     elif field_to_edit.lower() == "status":
-            new_value = easygui.buttonbox("Pick what status you want to assign", "Pick a Status", status)
+            new_value = easygui.buttonbox("Pick what status you want to\
+assign", "Pick a Status", status)
             if new_value == "completed":
                 selected_member = tasks[task_id]["Assignee"]
                 team_member[selected_member]["Task assigned"].remove(task_id)
-    elif member_id == None:
+    elif field_to_edit == None:
         return
     else:
         new_value = string_val(field_to_edit)
@@ -184,15 +186,19 @@ def add_task():
     assignees = ["JSM", "JLO", "BDI", "None"]
 
     for field in categories:
-        #This is to ensure that the user inputs a value by having the "" which is an empty string.
+        #This is to ensure that the user inputs a value by having the 
+        #"" which is an empty string.
         if field == "": 
             easygui.msgbox("Please enter a value")
-        #This is to ensure that the user inputs a value between 1-3 and that it is an integer through the int_val function
+        #This is to ensure that the user inputs a value between 1-3 and
+        #that it is an integer through the int_val function
         if field.lower() == "priority":
             value = int_val(1, 3, f"Enter the {field.lower()}")
-        #This is to ensure that the user inputs a value from the list of assignees.
+        #This is to ensure that the user inputs a value from the list of
+        #assignees.
         elif field.lower() == "assignee":
-            value = easygui.choicebox("Pick the member you want to assign the task too", "Pick Assignee", assignees)
+            value = easygui.choicebox("Pick the member you want to assign the\
+task too", "Pick Assignee", assignees)
             if value is None:
                 menu()
             if value != "None": 
@@ -200,12 +206,15 @@ def add_task():
                 team_member[value]["Task assigned"].append(task_id)
             
             
-        #This allows the user to choose what exact status then want to pick using the easygui.buttonbox
+        #This allows the user to choose what exact status then want to 
+        #pick using the easygui.buttonbox
         elif field.lower() == "status":
-            value = easygui.buttonbox("Pick what status you want to assign", "Pick a Status", status)
+            value = easygui.buttonbox("Pick what status you want to assign",\
+"Pick a Status", status)
             if value is None:
                 menu()
-        #Otherwise the user can input any string value they want, and it will be added to the new_task dictionary
+        #Otherwise the user can input any string value they want, and 
+        #it will be added to the new_task dictionary
         else:
             value = string_val(f"Enter the {field}")
             new_task[field] = value
@@ -214,11 +223,13 @@ def add_task():
     task_id = generate_task_id()
     tasks[task_id] = new_task
     #This easygui.msgbox outputs the task that was added and its ID
-    easygui.msgbox(f"Task '{new_task['Title']}' added with ID {task_id}.", "Task Added")
+    easygui.msgbox(f"Task '{new_task['Title']}' added with ID {task_id}.",\
+"Task Added")
     output_task(task_id)
 
 
-#This passes the min and max values to the function, and the value is the string that is passed to the user
+#This passes the min and max values to the function, and the value is 
+#the string that is passed to the user
 def int_val(min_val, max_val, value): 
     """
     This function validates the users input to ensure it is an integer, and is 
@@ -226,7 +237,8 @@ def int_val(min_val, max_val, value):
     value
     """
     while True:
-        #This loop validates the users input using the passed min and max values. And also checks if the user has inputted a value
+        #This loop validates the users input using the passed min and
+        # max values. And also checks if the user has inputted a value
         int_check = easygui.integerbox(value)
         if int_check is None:
             menu()
@@ -239,7 +251,8 @@ def int_val(min_val, max_val, value):
 
 
 
-def string_val(value):# I added the stry checking of if the input is empty
+def string_val(value):# I added the stry checking of if the input is
+    #empty
     """
     This function validates the users string inputs to ensure they are valid
     and that they put in a value
@@ -294,10 +307,11 @@ def output_all_tasks():
 
 def search(): #Adding exits to all the function 22/07
     """
-    This function allows the user to select what search fucntion they would like
-    to use, and then calls the selected search function
+    This function allows the user to select what search fucntion they 
+    would like to use, and then calls the selected search function
     """
-    #This is the options for the search function, and the functions that are called when the user selects an option
+    #This is the options for the search function, and the functions 
+    #that are called when the user selects an option
     options = {
         "Search for a Task": search_task,
         "Search for a team member": search_team_member,
@@ -335,22 +349,26 @@ def exit_search():
 
 def search_task(): 
     """
-    This function allows the user to search for a task by accesing the information in the nested dictionary
+    This function allows the user to search for a task by accesing the 
+    information in the nested dictionary
     """
     
     task_titles = []
-    #This loops through the tasks and appends the titles to the task_titles list
-    #This is so that the user can select a task by its title
+    #This loops through the tasks and appends the titles to the 
+    #task_titles list This is so that the user can select a 
+    #task by its title
     for task_id, task_data in tasks.items():
         task_titles.append(task_data["Title"])
 
 
-    selected_title = str(easygui.choicebox("\nPick a task to veiw", "Task search", task_titles))
+    selected_title = str(easygui.choicebox("\nPick a task to veiw",\
+"Task search", task_titles))
 
     if selected_title is None:
         menu()
 
-        #This loops through the tasks and checks if the title matches the selected title
+        #This loops through the tasks and checks if the title matches
+        #the selected title
     #If it does it outputs the task information
     for task_id, task_data in tasks.items():
         if task_data["Title"] == selected_title:
@@ -361,11 +379,11 @@ def search_task():
 def output_team_member(member_id):
     
     """
-    This function outputs the team members name and information by accesing the 
-    information in the nested dictionary
+    This function outputs the team members name and information by 
+    accesing the information in the nested dictionary
     """
-    #This function outputs the team member, and their key information by accesing the
-    #information in the nested dictionary
+    #This function outputs the team member, and their key information 
+    #by accesing the information in the nested dictionary
     output = [f"--- {team_member[member_id]['Name']} ---"]
     for key, value in team_member[member_id].items():
         output.append(f"{key} : {value}")
@@ -378,26 +396,24 @@ def output_team_member(member_id):
 def search_team_member():
     """
     This function allows the user to search for a team member by their name
-    and outputs their information by accesing the information in the nested dictionary
+    and outputs their information by accesing the information in the nested 
+    dictionary
     """
 
-    print("In search")
     team_names = []
     for member_id, member_info in team_member.items():
         team_names.append(member_info["Name"])
 
     selected_name = str(easygui.choicebox("\nPick a task to veiw",\
-        "Task search", team_names))
-    print(selected_name)
+"Task search", team_names))
     if selected_name == "None":
-        print("Exited")
-        # return ("Bob")
         return
         
 
     else:
-        #This loops through the team members and checks if the name matches the selected name
-        #If it does it outputs the team member information
+        #This loops through the team members and checks if the name 
+        #matches the selected name If it does it outputs 
+        #the team member information
         for member_id, member_info in team_member.items():
             if member_info["Name"] == selected_name:
                 output_team_member(member_id)
@@ -413,8 +429,8 @@ def generate_report():
     completed_tasks = 0
     in_progress_tasks = 0
     blocked_tasks = 0
-    #This loops through the tasks and counts the number of tasks in each status
-    #and increments the counters for each status
+    #This loops through the tasks and counts the number of tasks 
+    #in each status and increments the counters for each status
     for task_id, task in tasks.items():
         for key, value in task.items():
             if key == "Status":
@@ -427,13 +443,14 @@ def generate_report():
                 if value == "Not started":
                     not_started_tasks += 1
                     #Had to make some values capital for consistency
-    #This easygui.msgbox outputs the report of the tasks and their statuses
-    #and the number of tasks in each status
+
+    #This easygui.msgbox outputs the report of the tasks and their 
+    #statuses and the number of tasks in each status
 
     easygui.msgbox(f"There are {completed_tasks} completed tasks\n\
-                    There are {in_progress_tasks} in progress tasks\n\
-                    There are {not_started_tasks} not started tasks\n\
-                    There are {blocked_tasks} blocked tasks", title="Report")#added all of the taks to generate in the same box 24/07
+There are {in_progress_tasks} in progress tasks\n\
+There are {not_started_tasks} not started tasks\n\
+There are {blocked_tasks} blocked tasks", title="Report")#added all of the taks to generate in the same box 24/07
     
 
    
@@ -444,10 +461,11 @@ def exit_program():
     and asks the user if they are sure they want to logout
     and if they are sure it exits the application
     """
-     #This easygui.buttonbox asks the user if they are sure they want to logout
-    #If they are sure it exits the application, otherwise it returns to the menu
+     #This easygui.buttonbox asks the user if they are sure they 
+     #want to logout If they are sure it exits the application, 
+     #otherwise it returns to the gmenu
     choice = easygui.buttonbox("Are you sure you would like to Exit",\
-        "Logout", choices = ["Yes", "No"])
+        "logout", choices = ["Yes", "No"])
     if choice == "Yes":
         exit()
     else:
