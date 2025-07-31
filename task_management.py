@@ -49,8 +49,6 @@ and also their assignees, priority and status.
     }
 }
 
-
-
 team_member = {
     """
 This nested dictionary holds all the team members, and their key information
@@ -77,6 +75,10 @@ and also their tasks assigned in a list
 
 }
 
+#Both of these are constant I have defined
+max_val = 3
+
+min_val = 1
 
 def menu():
     """
@@ -112,7 +114,6 @@ def menu():
         if selection is None:
             exit_program()
         get_input = options[selection]()
-
 
 def update_task():
     """
@@ -163,7 +164,7 @@ def update_task():
     elif field_to_edit.lower() == "status":
             new_value = easygui.buttonbox("Pick what status you want to\
 assign", "Pick a Status", status)
-            if new_value == "completed":
+            if new_value.lower() == "completed":
                 selected_member = tasks[task_id]["Assignee"]
                 team_member[selected_member]["Task assigned"].remove(task_id)
     elif field_to_edit == None:
@@ -176,8 +177,6 @@ assign", "Pick a Status", status)
     easygui.msgbox(f"{field_to_edit} updates successfully.", "Edit Complete")
     output_task(task_id)
     
-
-#Problem where user can add a task without a name of other variables.
 def add_task():
     """
     This function allows the user to add a task and customise its properties
@@ -233,9 +232,6 @@ task too", "Pick Assignee", assignees)
 "Task Added")
     output_task(task_id)
 
-
-#This passes the min and max values to the function, and the value is 
-# the string that is passed to the user.
 def int_val(min_val, max_val, value): 
     """
     This function validates the users input to ensure it is an integer, and is 
@@ -255,9 +251,7 @@ def int_val(min_val, max_val, value):
         else:
             return int_check
 
-
-def string_val(value):# I added the stry checking of if the input is
-    # empty.
+def string_val(value):
     """
     This function validates the users string inputs to ensure they are valid
     and that they put in a value
@@ -273,7 +267,6 @@ def string_val(value):# I added the stry checking of if the input is
         else:
             return str_check.strip()
         
-
 def generate_task_id():
     """
     This function generates an ID for a new task
@@ -282,7 +275,6 @@ def generate_task_id():
     # adding one, and then adding 1, and then returns the task_id.
     task_id = f"T{len(tasks)+1}"
     return task_id
-
 
 def output_task(task_id):
     """
@@ -295,7 +287,6 @@ def output_task(task_id):
     for key, value in tasks[task_id].items():
         output.append(f"{key} : {value}")
     easygui.msgbox("\n".join(output), title=tasks[task_id]["Title"])
-
 
 def output_all_tasks():
     """
@@ -313,8 +304,7 @@ def output_all_tasks():
         output.append("")
     easygui.msgbox("\n".join(output), title = "All Tasks")
 
-
-def search(): #Adding exits to all the function 22/07
+def search(): 
     """
     This function allows the user to select what search fucntion they 
     would like to use, and then calls the selected search function
@@ -342,13 +332,11 @@ def search(): #Adding exits to all the function 22/07
         get_input = options[selection]()
     return
 
-
 def exit_search():
     """
     This allows the user to exit the search function
     """
     menu()
-
 
 def search_task(): 
     """
@@ -378,7 +366,6 @@ def search_task():
             output_task(task_id)
             return task_id 
 
-
 def output_team_member(member_id):
     
     """
@@ -391,7 +378,6 @@ def output_team_member(member_id):
     for key, value in team_member[member_id].items():
         output.append(f"{key} : {value}")
     easygui.msgbox("\n".join(output), title=team_member[member_id]["Name"])
-
 
 def search_team_member():
     """
@@ -406,8 +392,8 @@ def search_team_member():
         team_names.append(member_info["Name"])
     #This easygui.choicebox allows the user to select a team member by 
     # their name.
-    selected_name = str(easygui.choicebox("\nPick a task to veiw",\
-"Task search", team_names))
+    selected_name = str(easygui.choicebox("\nPick a team member to \
+veiw","Task search", team_names))
     if selected_name == "None":
         return
     else:
@@ -418,7 +404,6 @@ def search_team_member():
             if member_info["Name"] == selected_name:
                 output_team_member(member_id)
                 return member_id
-
 
 def generate_report():
     """
@@ -469,4 +454,3 @@ def exit_program():
         menu()
     
 menu()
-
