@@ -1,12 +1,12 @@
 
 import easygui
 
-
-tasks = {
-    """
+"""
 This nested dictionary holds all the tasks, and their key information
 and also their assignees, priority and status.
 """
+tasks = {
+   
 
     "T1" : {
         "Title": "Design Homepage",
@@ -49,11 +49,12 @@ and also their assignees, priority and status.
     }
 }
 
-team_member = {
-    """
-This nested dictionary holds all the team members, and their key information
-and also their tasks assigned in a list
 """
+    This nested dictionary holds all the team members, and their key information
+    and also their tasks assigned in a list
+    """
+team_member = {
+    
 
     "JSM":{
         "Name": "Jhon Smith",
@@ -115,6 +116,8 @@ def menu():
             exit_program()
         get_input = options[selection]()
 
+
+
 def update_task():
     """
     This update function allows the user to edit the existing 
@@ -164,7 +167,7 @@ def update_task():
             #assignee = tasks[task_id]["Assignee"]
             #team_member[assignee]["Task assigned"].remove(task_id)
             #team_member[member_id]["Task assigned"].append(task_id)
-
+            
 #This statement checks if the user has selected a status, and then 
 #updates the status of the task, and also removes the task from the 
 #previous assignee only if the status is completed.
@@ -173,7 +176,14 @@ def update_task():
 assign", "Pick a Status", status)
             if new_value.lower() == "completed":
                 selected_member = tasks[task_id]["Assignee"]
-                team_member[selected_member]["Task assigned"].remove(task_id)
+                assignee = tasks[task_id]["Assignee"]
+                if assignee != "None":
+                    if tasks[task_id]["Status"] != "completed":
+                        team_member[selected_member]["Task assigned"].remove(task_id)
+            
+            else:
+                easygui.msgbox("You can't change a completed task to a different status.")
+                return
     elif field_to_edit == None:
         return
     else:
@@ -193,7 +203,7 @@ def add_task():
     #This easygui.buttonbox displays the options for the user to choose.
     status_options = ["Blocked", "In progress", "Not started", "Completed"]
     status = [field for field in status_options]
-    categories = ["Title", "description", "assignee", "priority", "Status"]
+    categories = ["Title", "Description", "Assignee", "Priority", "Status"] #made descritpion assignee and priority capitalised
     new_task = {}
     assignees = ["JSM", "JLO", "BDI", "None"]
 
@@ -216,7 +226,6 @@ task too", "Pick Assignee", assignees)
             if value != "None": 
                 task_id = generate_task_id()
                 team_member[value]["Task assigned"].append(task_id)
-            
             
             
         #This allows the user to choose what exact status they want to 
