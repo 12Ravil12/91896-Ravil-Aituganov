@@ -1,13 +1,13 @@
 
 import easygui
 
-"""
+
+tasks = {
+    """
 This nested dictionary holds all the tasks, and their key information
 and also their assignees, priority and status.
 """
 
-
-tasks = {
     "T1" : {
         "Title": "Design Homepage",
         "Description" : "Create the Login page for the website",
@@ -49,12 +49,13 @@ tasks = {
     }
 }
 
-"""
+
+
+team_member = {
+    """
 This nested dictionary holds all the team members, and their key information
 and also their tasks assigned in a list
 """
-
-team_member = {
 
     "JSM":{
         "Name": "Jhon Smith",
