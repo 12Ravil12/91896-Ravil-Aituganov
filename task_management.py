@@ -153,11 +153,18 @@ def update_task():
             return
         new_value = member_id
         if tasks[task_id]["Assignee"] == "None":
-            team_member[member_id]["Task assigned"].append(task_id)
+            team_member[member_id]["Task assigned"].append(task_id)  
         else:
-            assignee = tasks[task_id]["Assignee"]
-            team_member[assignee]["Task assigned"].remove(task_id)
+            assignee = tasks [task_id]["Assignee"]
+            if tasks[task_id]["Status"] != "completed":
+                team_member[assignee]["Task assigned"].remove(task_id)
             team_member[member_id]["Task assigned"].append(task_id)
+
+
+            #assignee = tasks[task_id]["Assignee"]
+            #team_member[assignee]["Task assigned"].remove(task_id)
+            #team_member[member_id]["Task assigned"].append(task_id)
+
 #This statement checks if the user has selected a status, and then 
 #updates the status of the task, and also removes the task from the 
 #previous assignee only if the status is completed.
@@ -209,6 +216,7 @@ task too", "Pick Assignee", assignees)
             if value != "None": 
                 task_id = generate_task_id()
                 team_member[value]["Task assigned"].append(task_id)
+            
             
             
         #This allows the user to choose what exact status they want to 
