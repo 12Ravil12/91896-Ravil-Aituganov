@@ -159,10 +159,15 @@ def update_task():
             team_member[member_id]["Task assigned"].append(task_id)  
         else:
             assignee = tasks [task_id]["Assignee"]
-            if tasks[task_id]["Status"] != "completed":
+            if tasks[task_id]["Status"] != "Completed":
                 team_member[assignee]["Task assigned"].remove(task_id)
+            elif tasks[task_id]["Status"] == "Completed":
+                #This checks if the task is completed, and if it is, it
+                # displays a message to the user that they can't change
+                # the assignee of a completed task.
+                easygui.msgbox("You can't change the assignee of a completed task.")
+                return
             team_member[member_id]["Task assigned"].append(task_id)
-
 
             #assignee = tasks[task_id]["Assignee"]
             #team_member[assignee]["Task assigned"].remove(task_id)
@@ -178,8 +183,12 @@ assign", "Pick a Status", status)
                 selected_member = tasks[task_id]["Assignee"]
                 assignee = tasks[task_id]["Assignee"]
                 if assignee != "None":
-                    if tasks[task_id]["Status"] != "completed":
+                    if tasks[task_id]["Status"] != "Completed":
                         team_member[selected_member]["Task assigned"].remove(task_id)
+                        tasks[task_id]["Assignee"] = "None" 
+                    else:
+                        easygui.msgbox("You can't change a completed task to completed again")
+                        return
             
             else:
                 easygui.msgbox("You can't change a completed task to a different status.")
