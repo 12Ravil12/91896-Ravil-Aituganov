@@ -208,6 +208,7 @@ task to completed again")
     easygui.msgbox(f"{field_to_edit} updates successfully.", "Edit Complete")
     output_task(task_id)
     
+    
 def add_task():
     """
     This function allows the user to add a task and customise its properties
