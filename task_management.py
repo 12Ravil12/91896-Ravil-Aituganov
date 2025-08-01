@@ -195,8 +195,8 @@ task to completed again")
                         return
             
             else:
-                easygui.msgbox("You can't change a completed task to\
- a different status.")
+                easygui.msgbox("You can't change a status task to\
+ the same status again")
                 return
     elif field_to_edit == None:
         return
