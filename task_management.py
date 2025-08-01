@@ -234,7 +234,7 @@ def add_task():
         #assignees.
         elif field.lower() == "assignee":
             value = easygui.choicebox("Pick the member you want to assign the\
-task too", "Pick Assignee", assignees)
+ task too", "Pick Assignee", assignees)
             if value is None:
                 menu()
             if value != "None": 
