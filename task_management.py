@@ -50,7 +50,8 @@ tasks = {
 }
 
 """
-    This nested dictionary holds all the team members, and their key information
+    This nested dictionary holds all the team members, and their key \
+information
     and also their tasks assigned in a list
     """
 team_member = {
@@ -165,7 +166,8 @@ def update_task():
                 #This checks if the task is completed, and if it is, it
                 # displays a message to the user that they can't change
                 # the assignee of a completed task.
-                easygui.msgbox("You can't change the assignee of a completed task.")
+                easygui.msgbox("You can't change the assignee of a\
+completed task.")
                 return
             team_member[member_id]["Task assigned"].append(task_id)
 
@@ -184,14 +186,17 @@ assign", "Pick a Status", status)
                 assignee = tasks[task_id]["Assignee"]
                 if assignee != "None":
                     if tasks[task_id]["Status"] != "Completed":
-                        team_member[selected_member]["Task assigned"].remove(task_id)
+                        team_member[selected_member]["Task\
+ assigned"].remove(task_id)
                         tasks[task_id]["Assignee"] = "None" 
                     else:
-                        easygui.msgbox("You can't change a completed task to completed again")
+                        easygui.msgbox("You can't change a completed \
+task to completed again")
                         return
             
             else:
-                easygui.msgbox("You can't change a completed task to a different status.")
+                easygui.msgbox("You can't change a completed task to\
+ a different status.")
                 return
     elif field_to_edit == None:
         return
@@ -212,7 +217,7 @@ def add_task():
     #This easygui.buttonbox displays the options for the user to choose.
     status_options = ["Blocked", "In progress", "Not started", "Completed"]
     status = [field for field in status_options]
-    categories = ["Title", "Description", "Assignee", "Priority", "Status"] #made descritpion assignee and priority capitalised
+    categories = ["Title", "Description", "Assignee", "Priority", "Status"] 
     new_task = {}
     assignees = ["JSM", "JLO", "BDI", "None"]
 
